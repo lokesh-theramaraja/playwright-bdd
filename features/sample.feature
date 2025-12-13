@@ -10,7 +10,7 @@ Feature: Sample Feature
     Then I should be on the "Installation | Playwright1" page
 
 @login
-  Scenario: Successful login
+  Scenario: Test site login
     Given I open the login page
     When I login with username "practice" and password "SuperSecretPassword!"
     Then I should see the dashboard
