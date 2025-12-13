@@ -3,7 +3,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import LoginPage from '../pages/login.page.js';
 
 Given('I am on the Playwright website', async function () {
-  await this.page.goto('https://playwright.dev/');
+  await this.goto('https://playwright.dev/');
 });
 
 When('I click the "Get started" button', async function () {
@@ -15,8 +15,8 @@ Then('I should be on the {string} page', async function (title) {
 });
 
 Given('I open the login page', async function () {
+  await this.goto(process.env.BASE_URL);
   this.loginPage = new LoginPage(this.page);
-  await this.loginPage.goto(process.env.BASE_URL);
 });
 
 When('I login with username {string} and password {string}', async function (username, password) {

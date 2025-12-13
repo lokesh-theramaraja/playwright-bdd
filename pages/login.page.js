@@ -5,11 +5,7 @@ class LoginPage {
     this.passwordInput = 'input[name="password"]';
     this.submitBtn = 'button[type="submit"]';
   }
-
-  async goto(url) {
-    await this.page.goto(url);
-  }
-
+  
   async login(username, password) {
     await this.page.fill(this.usernameInput, username);
     await this.page.fill(this.passwordInput, password);

@@ -17,19 +17,18 @@ Before(async function (scenario) {
   this.attach = this.attach;
 
   console.log(`\n--- Executing scenario: ${scenario.pickle.name} ---`);
+  console.log(`Environment: ${process.env.ENV}`);
+  console.log(`Base URL: ${process.env.BASE_URL}`);
+  console.log(`Browser launched: ${browserName} (headless: ${headless})`);
+
+  // await this.world.goto(process.env.BASE_URL); 
+  
 });
 
 After(async function (scenario) {
   if (scenario.result && String(scenario.result.status).toLowerCase() === 'failed') {
     // capture screenshot, attach to report if attach available
-    if (this.page) {
-      try {
-        const buffer = await this.page.screenshot();
-        this.attach(buffer, 'image/png');
-      } catch (e) {
-        console.error('Error capturing screenshot on failure:', e);
-      }
-    }
+    await this.takeAndAttachScreenshot(`${scenario.pickle.name}-failure-screenshot.png`);
   }
   // close resources if they exist
   if (this.page) await this.page.close();
