@@ -21,13 +21,37 @@ jobs:
       with:
         node-version: '20'
 
+    - name: Cache npm
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.npm
+          ~/.cache
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
     - name: Install dependencies
       run: npm ci
+
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-browsers-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-browsers-
 
     - name: Install Playwright browsers
       run: npx playwright install --with-deps
 
     - name: Run Cucumber BDD tests
+      env:
+        BROWSER: chromium
+        HEADLESS: 'true'
+        BASE_URL: 'https://practice.expandtesting.com/login'
+        ENV: test
       run: npx cucumber-js
 
     - name: Upload test reports
